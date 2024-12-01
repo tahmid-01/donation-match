@@ -4,6 +4,7 @@ const path = require("path");
 const cors = require("cors");
 
 const connectDB = require("./config/mongodb");
+const UserController = require("./controllers/UserController");
 const PORT = process.env.PORT || 3000;
 
 /*** load environment variables */
@@ -33,7 +34,7 @@ app.get("/api/v1", (req, res) => {
   version: "1.0.0",
  });
 });
-//app.use("/api/v1/users", userRoutes -> UserController);
+app.use("/api/v1/users", UserController);
 app.get("*", (req, res) => {
  // res.sendFile(path.join(__dirname, "frontend/dist/index.html"));
 });

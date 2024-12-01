@@ -3,9 +3,8 @@ const dotenv = require("dotenv");
 const path = require("path");
 const cors = require("cors");
 
-const connectDB = require("./config/mongodb");
+const connectDB = require("./utils/mongodb");
 const UserController = require("./controllers/UserController");
-const PORT = process.env.PORT || 3000;
 
 /*** load environment variables */
 if (process.env.NODE_ENV === "development") {
@@ -34,7 +33,7 @@ app.get("/api/v1", (req, res) => {
   version: "1.0.0",
  });
 });
-app.use("/api/v1/users", UserController);
+app.use("/api/v1/user", UserController);
 app.get("*", (req, res) => {
  // res.sendFile(path.join(__dirname, "frontend/dist/index.html"));
 });
@@ -50,6 +49,7 @@ app.use((err, req, res, next) => {
 });
 
 /*** server setup */
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
  console.log(
   `Running on http://localhost:${PORT} - ${

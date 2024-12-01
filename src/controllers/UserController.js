@@ -11,7 +11,7 @@ const router = express.Router();
 const User = mongoose.model("User", userSchema);
 
 /* GET - get current user */
-router.get("/", checkAuth, async (req, res, next) => {
+router.get("/me", checkAuth, async (req, res, next) => {
  try {
   const data = await User.findOne({ _id: req.userId }).select(
    "profile email create_time last_login_at password_changed_at"

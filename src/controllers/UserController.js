@@ -27,12 +27,12 @@ router.get("/me", checkAuth, async (req, res, next) => {
 
 /* POST - create a new user */
 router.post("/signup", async (req, res, next) => {
- if (req.body.profile.display_name && req.body.password && req.body.email) {
+ if (req.body.display_name && req.body.password && req.body.email) {
   const newUser = new User({
    password: bcrypt.hashSync(req.body.password, 10),
    email: req.body.email,
    profile: {
-    display_name: req.body.profile.display_name,
+    display_name: req.body.display_name,
    },
    create_time: Date.now(),
    last_login_at: Date.now(),
@@ -41,7 +41,6 @@ router.post("/signup", async (req, res, next) => {
    const data = await newUser.save();
    res.status(201).json({
     message: "Successfully created a new user!",
-    data,
    });
   } catch (err) {
    return next(err);
@@ -57,15 +56,21 @@ router.post("/signup", async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
  try {
   if (req.body.auth) {
-   res.status(200).json({
-    message: "Successfully logged in!",
-    data: {
-     uid: req.userId,
-     profile: {
-      email: req.email,
-      ...req.profile,
-     },
-    },
+   checkAuth(req, res, (msg) => {
+    if (msg) {
+     next(msg);
+    } else {
+     res.status(200).json({
+      message: "Successfully logged in!",
+      data: {
+       uid: req.userId,
+       profile: {
+        email: req.email,
+        ...req.profile,
+       },
+      },
+     });
+    }
    });
   } else {
    let reqObj = {};
@@ -91,6 +96,7 @@ router.post("/login", async (req, res, next) => {
      );
      res.status(200).json({
       message: "Successfully logged in!",
+      auth: token,
      });
     } else {
      res.status(401).json({

@@ -5,6 +5,8 @@ const cors = require("cors");
 
 const connectDB = require("./utils/mongodb");
 const UserController = require("./controllers/UserController");
+const RequestController = require("./controllers/RequestController");
+const DonateController = require("./controllers/DonateController");
 
 /*** load environment variables */
 if (process.env.NODE_ENV === "development") {
@@ -34,6 +36,8 @@ app.get("/api/v1", (req, res) => {
  });
 });
 app.use("/api/v1/user", UserController);
+app.use("/api/v1/donate", DonateController);
+app.use("/api/v1/request", RequestController);
 app.get("*", (req, res) => {
  // res.sendFile(path.join(__dirname, "frontend/dist/index.html"));
 });

@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 const crypto = require("crypto");
+
 const { emailValidation, nameValidation } = require("../utils/validate");
+const addressSchema = require("./common/address");
+const phoneSchema = require("./common/phone");
 
 const userSchema = mongoose.Schema({
  email: {
@@ -19,6 +22,8 @@ const userSchema = mongoose.Schema({
    required: [true, "Name is required!"],
    validate: nameValidation,
   },
+  address: addressSchema,
+  phone: phoneSchema,
  },
  create_time: {
   type: Date,
@@ -31,6 +36,19 @@ const userSchema = mongoose.Schema({
  password_changed_at: Date,
  password_reset_token: String,
  password_reset_expires: Date,
+
+ donate: [
+  {
+   type: mongoose.Schema.Types.ObjectId,
+   ref: "Donate",
+  },
+ ],
+ request: [
+  {
+   type: mongoose.Schema.Types.ObjectId,
+   ref: "Request",
+  },
+ ],
 });
 
 userSchema.methods.createpassword_reset_token = function () {

@@ -3,15 +3,15 @@ const dotenv = require("dotenv");
 const path = require("path");
 const cors = require("cors");
 
-const connectDB = require("./utils/mongodb");
-const connectCloudinary = require("./utils/cloudinary")
-const UserController = require("./controllers/UserController");
-const RequestController = require("./controllers/RequestController");
-const DonateController = require("./controllers/DonateController");
+const connectDB = require("./src/utils/mongodb");
+const connectCloudinary = require("./src/utils/cloudinary")
+const UserController = require("./src/controllers/UserController");
+const RequestController = require("./src/controllers/RequestController");
+const DonateController = require("./src/controllers/DonateController");
 
 /*** load environment variables */
 if (process.env.NODE_ENV === "development") {
- dotenv.config({ path: path.resolve(__dirname, "../.env.local") });
+ dotenv.config({ path: path.resolve(__dirname, ".env.local") });
 } else {
  dotenv.config();
 }
@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === "development") {
 /*** express app initialization */
 const app = express();
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "../frontend/dist")));
+app.use(express.static(path.join(__dirname, "frontend/dist")));
 app.use(
  cors({
   origin: "*",
@@ -41,7 +41,7 @@ app.use("/api/v1/user", UserController);
 app.use("/api/v1/donate", DonateController);
 app.use("/api/v1/request", RequestController);
 app.get("*", (req, res) => {
- res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+ res.sendFile(path.join(__dirname, "frontend/dist/index.html"));
 });
 
 /*** default error handler */

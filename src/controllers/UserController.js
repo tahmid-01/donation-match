@@ -32,7 +32,7 @@ router.post("/signup", async (req, res, next) => {
    password: bcrypt.hashSync(req.body.password, 10),
    email: req.body.email,
    profile: {
-    display_name: req.body.display_name,
+    display_name: req.body.displayName,
    },
    create_time: Date.now(),
    last_login_at: Date.now(),

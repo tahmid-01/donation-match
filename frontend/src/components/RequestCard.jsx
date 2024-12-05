@@ -38,7 +38,7 @@ export default function RequestCard({ id, name, need, date, mobile, whiteBg }) {
     </div>
     <Link to={`/request/${id}`}>
      <button className="text-md font-medium text-center text-black border-2 border-orange-500 border-solid bg-orange-500 bg-opacity-20 rounded-[50px] px-5 py-1 hover:bg-orange-500 hover:text-white">
-      Donate
+      Information
      </button>
     </Link>
    </div>

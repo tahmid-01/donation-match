@@ -39,9 +39,9 @@ export function DonorCard({
       <div className="mt-2 text-2xl font-bold text-black">{donations}</div>
       <div className="text-xl text-zinc-500">Donations</div>
      </div>
-     <Link to={`/request/${id}`}>
+     <Link to={`/donate/${id}`}>
       <button className="text-md font-medium text-center text-black border-2 border-orange-500 border-solid bg-orange-500 bg-opacity-20 rounded-[50px] px-5 py-1 hover:bg-orange-500 hover:text-white">
-       Request
+       Information
       </button>
      </Link>
     </div>

@@ -23,6 +23,9 @@ function Navbar({ loggedIn }) {
  const [name, setName] = useState(null);
  const [email, setEmail] = useState(null);
  const [profilePic, setProfilePic] = useState(null);
+
+ const [showMobileNav, setShowMobileNav] = useState(false);
+
  const profile = JSON.parse(localStorage.getItem("profile"));
 
  const navItems = [
@@ -34,8 +37,8 @@ function Navbar({ loggedIn }) {
   },
   {
    text: "Donors",
-   to: "/view/donors",
-   isActive: location.pathname === "/view/donors",
+   to: "/view/donates",
+   isActive: location.pathname === "/view/donates",
   },
   {
    text: "Requests",
@@ -44,47 +47,9 @@ function Navbar({ loggedIn }) {
   },
  ];
 
- useEffect(() => {
-  if (profile) {
-   setName(profile?.display_name);
-   setEmail(profile?.email);
-   setProfilePic(profile?.profile_photo);
-  }
- }, [profile]);
-
- useEffect(() => {
-  window.addEventListener("scroll", () => {
-   if (window.scrollY > 10) {
-    setScrolled(true);
-   } else {
-    setScrolled(false);
-   }
-  });
- }, []);
- return (
-  <nav
-   className={`w-full sticky z-50 top-0 left-0 ${
-    scrolled ? "bg-white/90 backdrop-blur shadow" : "bg-transparent shadow-none"
-   } py-4 transition-all`}
-  >
-   <div className="w-full max-w-7xl px-8 mx-auto flex items-center justify-between">
-    <Link to="/">
-     <div
-      className="text-xl font-medium text-black flex items-center gap-1"
-      role="heading"
-      aria-level={1}
-     >
-      <img
-       src="/images/logo/logo.png"
-       alt="logo"
-       className="w-10 h-10 -mt-2 object-cover"
-      />
-      <p>
-       <span className="text-orange-500">Do</span>nationMatch
-      </p>
-     </div>
-    </Link>
-
+ const NavComponents = ({ hiddenForMobile }) => (
+  <>
+   <div className={hiddenForMobile && "hidden lg:flex"}>
     <div className="items-center gap-12 text-xl hidden lg:flex">
      {navItems.map((item, index) => (
       <NavigationLink
@@ -95,7 +60,8 @@ function Navbar({ loggedIn }) {
       />
      ))}
     </div>
-
+   </div>
+   <div className={hiddenForMobile && "hidden lg:flex"}>
     {loggedIn ? (
      <div className="flex items-center gap-1">
       <Link to="/profile">
@@ -143,7 +109,7 @@ function Navbar({ loggedIn }) {
     ) : (
      <Link to="/login">
       <button
-       className="py-2 px-8 text-base font-bold text-white bg-orange-500 hover:bg-orange-600 transition-colors duration-200 rounded-[92px] focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+       className="py-2 px-4 lg:px-8 text-base font-bold text-white bg-orange-500 hover:bg-orange-600 transition-colors duration-200 rounded-[92px] focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
        aria-label="Sign In"
       >
        Sign In
@@ -151,7 +117,109 @@ function Navbar({ loggedIn }) {
      </Link>
     )}
    </div>
-  </nav>
+  </>
+ );
+
+ useEffect(() => {
+  if (profile) {
+   setName(profile?.display_name);
+   setEmail(profile?.email);
+   setProfilePic(profile?.profile_photo);
+  }
+ }, [profile]);
+
+ useEffect(() => {
+  window.addEventListener("scroll", () => {
+   if (window.scrollY > 10) {
+    setScrolled(true);
+   } else {
+    setScrolled(false);
+   }
+  });
+ }, []);
+ return (
+  <>
+   <nav
+    className={`w-full sticky z-50 top-0 left-0 ${
+     scrolled
+      ? "bg-white/90 backdrop-blur shadow"
+      : "bg-transparent shadow-none"
+    } py-4 transition-all`}
+   >
+    <div className="w-full max-w-7xl px-4 lg:px-8 mx-auto flex items-center justify-between">
+     <Link to="/">
+      <div
+       className="text-xl font-medium text-black flex items-center gap-1"
+       role="heading"
+       aria-level={1}
+      >
+       <img
+        src="/images/logo/logo.png"
+        alt="logo"
+        className="w-10 h-10 -mt-2 object-cover"
+       />
+       <p>
+        <span className="text-orange-500">Do</span>nationMatch
+       </p>
+      </div>
+     </Link>
+
+     <NavComponents hiddenForMobile />
+     <div className="lg:hidden">
+      <button
+       className="text-3xl text-black"
+       aria-label="Open"
+       onClick={() => {
+        setShowMobileNav(true);
+       }}
+      >
+       <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={2}
+        stroke="currentColor"
+        className="size-6"
+       >
+        <path
+         strokeLinecap="round"
+         strokeLinejoin="round"
+         d="M4 6h16M4 12h16m-7 6h7"
+        />
+       </svg>
+      </button>
+     </div>
+    </div>
+   </nav>
+   <div
+    className="fixed top-0 left-0 w-full h-screen bg-white/90 backdrop-blur shadow-md z-50 lg:hidden p-8"
+    style={{ display: showMobileNav ? "block" : "none" }}
+   >
+    <button
+     className="absolute top-8 right-8 text-3xl text-black"
+     aria-label="Close"
+     onClick={() => setShowMobileNav(false)}
+    >
+     <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+      stroke="currentColor"
+      className="w-6 h-6"
+     >
+      <path
+       strokeLinecap="round"
+       strokeLinejoin="round"
+       d="M6 18L18 6M6 6l12 12"
+      />
+     </svg>
+    </button>
+    <div className="flex flex-col gap-8 mt-12">
+     <NavComponents />
+    </div>
+   </div>
+  </>
  );
 }
 

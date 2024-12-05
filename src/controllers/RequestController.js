@@ -55,6 +55,33 @@ router.get("/all", async (req, res, next) => {
  }
 });
 
+/* GET - get request by id */
+router.get("/:id", async (req, res, next) => {
+ try {
+  const data = await Request.findById(req.params.id).populate({
+   path: "user",
+   select: "email profile.display_name profile.profile_photo",
+  });
+  if (!data) {
+   return res.status(404).json({ message: "Request not found" });
+  }
+  res.status(200).json({
+   message: "Retrieved request by id!",
+   data: {
+    ...data.toObject(),
+    date: data.createdAt,
+    user: {
+     name: data.user?.profile?.display_name || "Anonymous",
+     profile_photo: data.user?.profile?.profile_photo || "/images/avatar.png",
+     request_count: data.user?.request?.length || 0,
+    },
+   },
+  });
+ } catch (err) {
+  return next(err);
+ }
+});
+
 /* GET - get latest 10 requests by category */
 router.get("/category/:category", async (req, res, next) => {
  try {
@@ -110,7 +137,7 @@ router.post("/create", checkAuth, async (req, res, next) => {
    }
    const savedRequest = await newRequest.save();
    const user = await User.findById(req.userId);
-   user.requests.push(savedRequest._id);
+   user.request.push(savedRequest._id);
    await user.save();
 
    res.status(201).json({

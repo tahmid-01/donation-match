@@ -7,7 +7,7 @@ const AboutPage = () => {
     {/* Hero Section */}
     <section className="relative">
      <div className="max-w-7xl w-full mx-auto grid lg:grid-cols-2 items-center min-h-[90vh]">
-      <div className="px-8 py-16 w-full text-center md:text-left">
+      <div className="px-4 lg:px-8 py-16 w-full text-center md:text-left">
        <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-4">
         Empowering Lives Through Giving
        </h1>
@@ -30,7 +30,7 @@ const AboutPage = () => {
     </section>
 
     <section className="bg-white">
-     <div className="py-16 px-8 w-full max-w-7xl mx-auto">
+     <div className="py-16 px-4 lg:px-8 w-full max-w-7xl mx-auto">
       <h2 className="text-3xl font-bold text-orange-500 mb-8">Contributors</h2>
       <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
        {[
@@ -77,7 +77,7 @@ const AboutPage = () => {
 
     {/* Inspiring Stories Section */}
     <section className="py-16">
-     <div className="w-full max-w-7xl px-8 mx-auto">
+     <div className="w-full max-w-7xl px-4 lg:px-8 mx-auto">
       <h2 className="text-3xl lg:text-4xl font-bold text-gray-800">
        Inspiring <span className="text-orange-500">stories</span> from
        supporters
@@ -91,10 +91,7 @@ const AboutPage = () => {
        {Array(3)
         .fill(0)
         .map((_, index) => (
-         <div
-          key={index}
-          className="bg-white rounded-3xl shadow px-6 py-8"
-         >
+         <div key={index} className="bg-white rounded-3xl shadow px-6 py-8">
           <h3 className="text-lg font-bold text-gray-800">Empowering change</h3>
           <p className="text-gray-500 text-sm mt-2">
            Their work inspires hope and real change, fostering sustainable
@@ -120,7 +117,7 @@ const AboutPage = () => {
     </section>
 
     {/* Support Our Mission Section */}
-    <section className="bg-white py-16 px-8 text-center">
+    <section className="bg-white py-16 px-4 lg:px-8 text-center">
      <div className="container mx-auto">
       <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">
        Support our mission, change lives today

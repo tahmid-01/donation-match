@@ -22,9 +22,9 @@ function App() {
     <Route path="/profile" element={<ProfilePage />} />
     <Route path="/request" element={<NewRequest />} />
     <Route path="/donate" element={<NewDonation />} />
-    <Route path="/donor/:id" element={<Donor />} />
+    <Route path="/donate/:id" element={<Donor />} />
     <Route path="/request/:id" element={<Request />} />
-    <Route path="/view/donors" element={<DonorsPage />} />
+    <Route path="/view/donates" element={<DonorsPage />} />
     <Route path="/view/requests" element={<RequestsPage />} />
    </Routes>
   </Router>

@@ -184,7 +184,35 @@ export const getAllRequests = async (success, error) => {
   {
    method: "GET",
    headers: {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
+   },
+  },
+  success,
+  error
+ );
+};
+
+export const getDonationById = async (id, success, error) => {
+ await fetchData(
+  `/api/v1/donate/${id}`,
+  {
+   method: "GET",
+   headers: {
+    "Content-Type": "application/json",
+   },
+  },
+  success,
+  error
+ );
+};
+
+export const getRequestById = async (id, success, error) => {
+ await fetchData(
+  `/api/v1/request/${id}`,
+  {
+   method: "GET",
+   headers: {
+    "Content-Type": "application/json",
    },
   },
   success,

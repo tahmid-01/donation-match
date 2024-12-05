@@ -93,8 +93,8 @@ export default function HomePage() {
    {({ loggedIn }) => (
     <>
      {loggedIn ? (
-      <div className="w-full max-w-7xl mx-auto px-8 pt-3 pb-7">
-       <div className="inline-flex rounded-md shadow-sm" role="group">
+      <div className="w-full max-w-7xl mx-auto px-4 lg:px-8 pt-3 pb-7">
+       <div className="inline-flex rounded-md shadow-sm whitespace-nowrap" role="group">
         {[{ dir: "Feed" }, { dir: "My Lists" }, { dir: "Settings" }].map(
          ({ dir }, i, arr) => (
           <button
@@ -124,11 +124,11 @@ export default function HomePage() {
      )}
      {selectedNav === "Feed" && (
       <section
-       className="bg-white rounded-t-[3rem] shadow-[0_0_8px_0_rgba(0,0,0,0.15)]"
+       className="bg-white rounded-t-[1rem] lg:rounded-t-[3rem] shadow-[0_0_8px_0_rgba(0,0,0,0.15)]"
        id="home--donation"
       >
        <div
-        className="w-full max-w-7xl px-8 mx-auto flex justify-center gap-3 pt-12 pb-5"
+        className="w-full max-w-7xl px-4 lg:px-8 mx-auto overflow-x-auto md:overflow-visible flex md:justify-center gap-3 pt-12 pb-5"
         id="home--donation-type-group"
        >
         <DonationTypeButton
@@ -165,7 +165,7 @@ export default function HomePage() {
          </button>
 
          {showBloodGroups && (
-          <div className="absolute right-0 z-10 mt-2 w-24 bg-white rounded-md shadow-lg">
+          <div className="absolute right-0 z-30 mt-2 w-24 bg-white rounded-md shadow-lg">
            <div className="py-1">
             {bloodGroups.map((group) => (
              <button
@@ -203,7 +203,7 @@ export default function HomePage() {
        id="home--settings"
       >
        {" "}
-       <div className="w-full max-w-7xl px-8 mx-auto pt-12 pb-11">
+       <div className="w-full max-w-7xl px-4 lg:px-8 mx-auto pt-12 pb-11">
         <div className="grid lg:grid-cols-3 gap-8">
          <aside>
           <div className="w-full max-w-[200px] flex flex-col items-center">

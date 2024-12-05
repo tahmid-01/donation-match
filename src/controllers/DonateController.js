@@ -61,6 +61,32 @@ router.get("/all", async (req, res, next) => {
  }
 });
 
+/* GET - get a donation by id */
+router.get("/:id", async (req, res, next) => {
+ try {
+  const data = await Donate.findById(req.params.id).populate({
+   path: "user",
+   select: "email profile.display_name profile.profile_photo donate",
+  });
+  if (!data) {
+   return res.status(404).json({ message: "Donation not found" });
+  }
+  res.status(200).json({
+   message: "Retrieved donation by id",
+   data: {
+    ...data.toObject(),
+    user: {
+     name: data.user?.profile?.display_name || "Anonymous",
+     profile_photo: data.user?.profile?.profile_photo || "/images/avatar.png",
+     donation_count: data.user?.donate?.length || 0,
+    },
+   },
+  });
+ } catch (err) {
+  return next(err);
+ }
+});
+
 /* GET - get latest 10 donations by category */
 router.get("/category/:category", async (req, res, next) => {
  try {

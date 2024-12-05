@@ -18,11 +18,13 @@ export default function DonorsPage() {
  }, []);
  return (
   <Layout>
-   <div className="w-full min-h-[80vh] max-w-7xl px-8 mx-auto flex flex-col pb-5">
-    <div className="w-full mt-5 flex items-center justify-between">
-     <div className="text-4xl font-semibold leading-none">All Donors</div>
+   <div className="w-full min-h-[80vh] max-w-7xl px-4 lg:px-8 mx-auto flex flex-col pb-5">
+    <div className="w-full mt-5  flex-col md:flex-row gap-3 items-center justify-between">
+     <div className="text-2xl lg:text-4xl font-semibold leading-none">
+      All Donors
+     </div>
      <Link to="/donate">
-      <button className="text-sm font-semibold text-white bg-orange-600 px-4 py-2 gap-2 rounded-lg flex items-center">
+      <button className="text-sm font-semibold text-white bg-orange-600 px-3 lg:px-4 py-2 gap-2 rounded-lg flex items-center">
        Donate Something{" "}
        <svg
         xmlns="http://www.w3.org/2000/svg"

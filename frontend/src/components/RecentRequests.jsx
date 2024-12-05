@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 
 export default function RecentRequests({ requests }) {
  return (
-  <div className="w-full max-w-7xl px-8 mx-auto flex flex-col pb-5">
-   <div className="w-full mt-5 flex items-center justify-between">
-    <div className="self-start text-4xl font-semibold leading-none">
+  <div className="w-full max-w-7xl px-4 lg:px-8 mx-auto flex flex-col pb-5">
+   <div className="w-full mt-5 flex flex-col md:flex-row items-center justify-between gap-3 whitespace-nowrap">
+    <div className="text-2xl lg:text-4xl font-semibold leading-none">
      Recent Requests
     </div>
     <Link to="/request">
-     <button className="text-sm font-semibold text-white bg-orange-600 px-4 py-2 gap-2 rounded-lg flex items-center">
+     <button className="text-sm font-semibold text-white bg-orange-600 px-3 lg:px-4 py-2 gap-2 rounded-lg flex items-center">
       New Request{" "}
       <svg
        xmlns="http://www.w3.org/2000/svg"

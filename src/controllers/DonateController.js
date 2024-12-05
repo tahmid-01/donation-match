@@ -7,11 +7,11 @@ const donateSchema = require("../models/donate");
 const router = express.Router();
 const Donate = mongoose.model("Donate", donateSchema);
 
-/* GET - get latest 10 donations (unauthorized) */
+/* GET - get latest 10 donations */
 router.get("/latest", async (req, res, next) => {
  try {
   const data = await Donate.find({
-   status: "Ready",
+   expire_date: { $gte: new Date() },
   })
    .sort({ createdAt: -1 })
    .limit(10)
@@ -36,7 +36,7 @@ router.get("/latest", async (req, res, next) => {
  }
 });
 
-/* GET - get all donations (authorized) */
+/* GET - get all donations */
 router.get("/all", checkAuth, async (req, res, next) => {
  try {
   const data = await Donate.find();
@@ -49,28 +49,72 @@ router.get("/all", checkAuth, async (req, res, next) => {
  }
 });
 
-/* POST - create new donation (authorized) */
-router.post("/create", checkAuth, async (req, res, next) => {
+/* GET - get latest 10 donations by category */
+router.get("/category/:category", async (req, res, next) => {
  try {
-  const { category, amount, patient } = req.body;
-  const newDonate = new Donate({
-   user: req.userId,
-   category,
-   amount,
-   patient,
-  });
-  const savedDonate = await newDonate.save();
-
-  res.status(201).json({
-   message: "Donation created!",
-   donate: savedDonate,
+  const data = await Donate.find({
+   category: req.params.category,
+   expire_date: { $gte: new Date() },
+  })
+   .sort({ createdAt: -1 })
+   .limit(10)
+   .populate({
+    path: "user",
+    select: "profile.display_name profile.profile_photo donate",
+   });
+  res.status(200).json({
+   message: `Retrieved all donations in category: ${req.params.category}`,
+   data: data.map((d) => ({
+    ...d.toObject(),
+    user: {
+     name: d.user?.profile?.display_name || "Anonymous",
+     profile_photo: d.user?.profile?.profile_photo || "/images/avatar.png",
+     donation_count: d.user?.donate?.length || 0,
+    },
+   })),
   });
  } catch (err) {
   return next(err);
  }
 });
 
-/* DELETE - delete a donation (authorized) */
+/* POST - create new donation */
+router.post("/create", checkAuth, async (req, res, next) => {
+ try {
+  const { category, amount, description, phone, expire_date } = req.body;
+  if (category && expire_date && phone) {
+   const newDonate = new Donate({
+    user: req.userId,
+    category,
+    phone: {
+     code: phone.code,
+     number: phone.number,
+    },
+    expire_date: expire_date,
+   });
+   if (amount.value) {
+    newDonate.amount = amount;
+   }
+   if (description) {
+    newDonate.description = description;
+   }
+   const savedDonate = await newDonate.save();
+
+   res.status(201).json({
+    message: "Donation created!",
+    donate: savedDonate,
+   });
+  } else {
+   res.status(400).json({
+    error: "Please provide all required fields!",
+   });
+  }
+ } catch (err) {
+  return next(err);
+ }
+});
+
+/* DELETE - delete a donation */
 router.delete("/:id", checkAuth, async (req, res, next) => {
  try {
   const donate = await Donate.findOne({
@@ -88,7 +132,7 @@ router.delete("/:id", checkAuth, async (req, res, next) => {
  }
 });
 
-/* PUT - update a donation (authorized) */
+/* PUT - update a donation*/
 router.put("/:id", checkAuth, async (req, res, next) => {
  try {
   const donate = await Donate.findOne({

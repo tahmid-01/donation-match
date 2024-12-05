@@ -4,20 +4,19 @@ const amountSchema = mongoose.Schema({
  amount: {
   unit: {
    type: String,
-   required: [true, "Amount unit is required!"],
    validate: {
     validator: function (unit) {
      const validUnits = {
-      "Blood (A+)": ["mL", "L"],
-      "Blood (A-)": ["mL", "L"],
-      "Blood (B+)": ["mL", "L"],
-      "Blood (B-)": ["mL", "L"],
-      "Blood (AB+)": ["mL", "L"],
-      "Blood (AB-)": ["mL", "L"],
-      "Blood (O+)": ["mL", "L"],
-      "Blood (O-)": ["mL", "L"],
+      "Blood (A+)": ["mL", "L", "bag"],
+      "Blood (A-)": ["mL", "L", "bag"],
+      "Blood (B+)": ["mL", "L", "bag"],
+      "Blood (B-)": ["mL", "L", "bag"],
+      "Blood (AB+)": ["mL", "L", "bag"],
+      "Blood (AB-)": ["mL", "L", "bag"],
+      "Blood (O+)": ["mL", "L", "bag"],
+      "Blood (O-)": ["mL", "L", "bag"],
       Cloth: ["kg", "pcs"],
-      Food: ["kg", "pcs", "L"],
+      Food: ["kg", "pcs", "L", "plate"],
      };
      const category = this.category;
      return validUnits[category] && validUnits[category].includes(unit);
@@ -28,7 +27,6 @@ const amountSchema = mongoose.Schema({
   },
   value: {
    type: Number,
-   required: [true, "Amount value is required!"],
    min: [0, "Value must be a positive number."],
   },
  },

@@ -1,20 +1,92 @@
+import { useEffect, useState } from "react";
+
 import Hero from "../components/Hero";
 import TopDonors from "../components/TopDonors";
 import RecentRequests from "../components/RecentRequests";
 import Layout from "../Layout";
-import { useState } from "react";
 import { DonationTypeButton } from "./../components/DonationTypeButton";
+import {
+ getDonationsByCategory,
+ getRequestsByCategory,
+ recentRequests,
+ topDonors,
+} from "../utils/API";
 
 export default function HomePage() {
  const [showBloodGroups, setShowBloodGroups] = useState(false);
  const [selectedNav, setSelectedNav] = useState("Feed");
  const [selectedGroup, setSelectedGroup] = useState("All");
- const bloodGroups = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
+ const bloodGroups = [
+  "Blood (A+)",
+  "Blood (A-)",
+  "Blood (B+)",
+  "Blood (B-)",
+  "Blood (AB+)",
+  "Blood (AB-)",
+  "Blood (O+)",
+  "Blood (O-)",
+ ];
 
+ const [donors, setDonors] = useState(null);
+ const [requests, setRequests] = useState(null);
+
+ const getAllDonations = () => {
+  setDonors(null);
+  topDonors(
+   (d) => {
+    setDonors(d.data);
+   },
+   () => {
+    setDonors(false);
+   }
+  );
+ };
+ const getAllRequests = () => {
+  setRequests(null);
+  recentRequests(
+   (r) => {
+    setRequests(r.data);
+   },
+   () => {
+    setRequests(false);
+   }
+  );
+ };
  const handleGroupClick = (group) => {
   setSelectedGroup(group);
   setShowBloodGroups(false);
+
+  if (group !== "All") {
+   setDonors(null);
+   setRequests(null);
+   getDonationsByCategory(
+    group,
+    (d) => {
+     setDonors(d.data);
+    },
+    () => {
+     setDonors(false);
+    }
+   );
+   getRequestsByCategory(
+    group,
+    (r) => {
+     setRequests(r.data);
+    },
+    () => {
+     setRequests(false);
+    }
+   );
+  } else if (group === "All") {
+   getAllDonations();
+   getAllRequests();
+  }
  };
+
+ useEffect(() => {
+  getAllDonations();
+  getAllRequests();
+ }, []);
 
  return (
   <Layout>
@@ -105,7 +177,7 @@ export default function HomePage() {
               }`}
               onClick={() => handleGroupClick(group)}
              >
-              {group}
+              {group.replace("Blood ", "").replace("(", "").replace(")", "")}
              </button>
             ))}
            </div>
@@ -121,8 +193,8 @@ export default function HomePage() {
          />
         ))}
        </div>
-       <TopDonors />
-       <RecentRequests />
+       <TopDonors donors={donors} />
+       <RecentRequests requests={requests} />
       </section>
      )}
      {selectedNav === "Settings" && (

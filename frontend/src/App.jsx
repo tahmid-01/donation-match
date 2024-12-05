@@ -8,6 +8,8 @@ import RequestsPage from "./pages/RequestsPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import Donor from "./pages/Donor.jsx";
 import Request from "./pages/Request.jsx";
+import NewRequest from "./pages/NewRequest.jsx";
+import NewDonation from "./pages/NewDonation";
 
 function App() {
  return (
@@ -18,6 +20,8 @@ function App() {
     <Route path="/signup" element={<SignUpPage />} />
     <Route path="/about" element={<AboutPage />} />
     <Route path="/profile" element={<ProfilePage />} />
+    <Route path="/request" element={<NewRequest />} />
+    <Route path="/donate" element={<NewDonation />} />
     <Route path="/donor/:id" element={<Donor />} />
     <Route path="/request/:id" element={<Request />} />
     <Route path="/view/donors" element={<DonorsPage />} />

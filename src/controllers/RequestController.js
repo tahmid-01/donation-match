@@ -9,7 +9,7 @@ const router = express.Router();
 const Request = mongoose.model("Request", requestSchema);
 const User = mongoose.model("User", userSchema);
 
-/* GET - get latest 10 requests (unauthorized) */
+/* GET - get latest 10 requests */
 router.get("/latest", async (req, res, next) => {
  try {
   const data = await Request.find().sort({ createdAt: -1 }).limit(10).populate({
@@ -32,7 +32,7 @@ router.get("/latest", async (req, res, next) => {
  }
 });
 
-/* GET - get all requests (authorized) */
+/* GET - get all requests */
 router.get("/all", checkAuth, async (req, res, next) => {
  try {
   const data = await User.find();
@@ -45,19 +45,59 @@ router.get("/all", checkAuth, async (req, res, next) => {
  }
 });
 
-/* POST - create new request (authorized) */
+/* GET - get latest 10 requests by category */
+router.get("/category/:category", async (req, res, next) => {
+ try {
+  const data = await Request.find({
+   category: req.params.category,
+  })
+   .sort({ createdAt: -1 })
+   .limit(10)
+   .populate({
+    path: "user",
+    select: "profile.display_name profile.profile_photo",
+   });
+  res.status(200).json({
+   message: `Retrieved latest donation requests for ${req.params.category}!`,
+   data: data.map((d) => ({
+    ...d.toObject(),
+    date: d.createdAt,
+    user: {
+     name: d.user?.profile?.display_name || "Anonymous",
+     profile_photo: d.user?.profile?.profile_photo || "/images/avatar.png",
+    },
+   })),
+  });
+ } catch (err) {
+  return next(err);
+ }
+});
+
+/* POST - create new request */
 router.post("/create", checkAuth, async (req, res, next) => {
  try {
-  const { category, amount, patient, address, phone } = req.body;
-  if (!category || !amount || !patient || !phone) {
+  const { category, amount, relationship, address, phone, description } =
+   req.body;
+  if (category && relationship && phone) {
    const newRequest = new Request({
     user: req.userId,
     category,
-    amount,
-    patient,
-    address,
-    phone,
+    relationship,
+    phone: {
+     code: phone.code,
+     number: phone.number,
+    },
+    is_finished: false,
    });
+   if (address) {
+    newRequest.address = address;
+   }
+   if (amount.value) {
+    newRequest.amount = amount;
+   }
+   if (description) {
+    newRequest.description = description;
+   }
    const savedRequest = await newRequest.save();
 
    res.status(201).json({
@@ -74,7 +114,7 @@ router.post("/create", checkAuth, async (req, res, next) => {
  }
 });
 
-/* DELETE - delete a request (authorized) */
+/* DELETE - delete a request */
 router.delete("/:id", checkAuth, async (req, res, next) => {
  try {
   const request = await Request.findOne({
@@ -92,7 +132,7 @@ router.delete("/:id", checkAuth, async (req, res, next) => {
  }
 });
 
-/* PUT - update a request (authorized) */
+/* PUT - update a request */
 router.put("/:id", checkAuth, async (req, res, next) => {
  try {
   const request = await Request.findOne({

@@ -3,32 +3,6 @@ const mongoose = require("mongoose");
 const amountSchema = require("./common/amount");
 const addressSchema = require("./common/address");
 const phoneSchema = require("./common/phone");
-const { nameValidation } = require("../utils/validate");
-
-const patientSchema = mongoose.Schema({
- name: {
-  type: String,
-  validate: nameValidation,
- },
- relationship: {
-  type: String,
-  enum: [
-   "Self (Man)",
-   "Self (Woman)",
-   "Spouse",
-   "Father",
-   "Mother",
-   "Son",
-   "Daughter",
-   "Brother",
-   "Sister",
-   "Relative (Man)",
-   "Relative (Woman)",
-   "Unknown",
-  ],
-  required: [true, "Relationship is required!"],
- },
-});
 
 const requestSchema = mongoose.Schema(
  {
@@ -54,19 +28,39 @@ const requestSchema = mongoose.Schema(
    required: [true, "Category is required!"],
   },
   amount: amountSchema,
-  patient: {
-   type: patientSchema,
-   required: [true, "Patient information is required!"],
+  relationship: {
+   type: String,
+   enum: [
+    "Self (Man)",
+    "Self (Woman)",
+    "Spouse",
+    "Father",
+    "Mother",
+    "Son",
+    "Daughter",
+    "Brother",
+    "Sister",
+    "Relative (Man)",
+    "Relative (Woman)",
+    "Unknown",
+   ],
+   required: [true, "Relationship to patient is required!"],
   },
   address: addressSchema,
   phone: {
    type: phoneSchema,
    required: [true, "Phone number is required!"],
   },
-  status: {
+  is_finished: {
+   type: "Boolean",
+   default: false,
+  },
+  description: {
    type: "String",
-   enum: ["Pending", "Completed"],
-   default: "Pending",
+   validate: {
+    validator: (description) => description.length <= 200,
+    message: "Description must be less than 200 characters!",
+   },
   },
  },
  {

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function RequestCard({ id, name, need, date, address, mobile }) {
+export default function RequestCard({ id, name, need, date, mobile }) {
  return (
   <div className="flex overflow-hidden flex-col grow mb-5 w-full rounded-3xl bg-back max-md:mt-10">
    <div className="flex flex-col px-5 mt-4 mb-3">
@@ -23,15 +23,9 @@ export default function RequestCard({ id, name, need, date, address, mobile }) {
    </div>
    <hr className="border-[1.5px] border-gray-300" />
 
-   <div className="flex items-center justify-between gap-4 px-5">
-    <div className="flex flex-col py-2 text-gray-500">
-     <div className="mt-2 font-medium text-sm">
-      {address &&
-       address.city &&
-       address.country &&
-       `${address.city}, ${address.country}`}
-     </div>
-     <div className="mb-2 font-medium text-xs">
+   <div className="flex items-center justify-between gap-4 px-5 py-2">
+    <div className="flex flex-col text-gray-500">
+     <div className="font-medium text-xs">
       {mobile &&
        mobile.code &&
        mobile.number &&

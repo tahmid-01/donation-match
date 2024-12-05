@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const addressSchema = mongoose.Schema({
  country: {
   type: String,
-  required: [true, "Country is required!"],
   validate: {
    validator: (value) => value.length > 1,
    message: "Country must have at least 2 characters.",
@@ -18,7 +17,6 @@ const addressSchema = mongoose.Schema({
  },
  city: {
   type: String,
-  required: [true, "City is required!"],
   validate: {
    validator: (value) => value.length > 1,
    message: "City must have at least 2 characters.",

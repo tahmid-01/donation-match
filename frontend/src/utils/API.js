@@ -103,3 +103,63 @@ export const recentRequests = async (success, error) => {
   error
  );
 };
+
+export const createRequest = async (data, success, error) => {
+ await fetchData(
+  "/api/v1/request/create",
+  {
+   method: "POST",
+   headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("t$n")}`,
+   },
+   body: JSON.stringify(data),
+  },
+  success,
+  error
+ );
+};
+
+export const createDonation = async (data, success, error) => {
+ await fetchData(
+  "/api/v1/donate/create",
+  {
+   method: "POST",
+   headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("t$n")}`,
+   },
+   body: JSON.stringify(data),
+  },
+  success,
+  error
+ );
+};
+
+export const getDonationsByCategory = async (category, success, error) => {
+ await fetchData(
+  `/api/v1/donate/category/${category}`,
+  {
+   method: "GET",
+   headers: {
+    "Content-Type": "application/json",
+   },
+  },
+  success,
+  error
+ );
+};
+
+export const getRequestsByCategory = async (category, success, error) => {
+ await fetchData(
+  `/api/v1/request/category/${category}`,
+  {
+   method: "GET",
+   headers: {
+    "Content-Type": "application/json",
+   },
+  },
+  success,
+  error
+ );
+};

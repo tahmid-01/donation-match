@@ -26,8 +26,8 @@ export default function LoginPage() {
  return (
   <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
    <div className="sm:mx-auto sm:w-full sm:max-w-md">
-    <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-     Log in to your account
+    <h2 className="mt-6 text-center text-3xl xl:text-4xl font-extrabold text-gray-900">
+     Log In
     </h2>
    </div>
 
@@ -82,7 +82,7 @@ export default function LoginPage() {
       </div>
      </form>
 
-     <div className="mt-6">
+     {/*<div className="mt-6">
       <div className="relative">
        <div className="absolute inset-0 flex items-center">
         <div className="w-full border-t border-gray-300"></div>
@@ -144,7 +144,7 @@ export default function LoginPage() {
         </a>
        </div>
       </div>
-     </div>
+     </div>*/}
 
      <div className="mt-6">
       <p className="text-center text-sm text-gray-600">

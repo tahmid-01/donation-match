@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const amountSchema = require("./common/amount");
+const phoneSchema = require("./common/phone");
 
 const donateSchema = mongoose.Schema(
  {
@@ -25,14 +26,12 @@ const donateSchema = mongoose.Schema(
    ],
    required: [true, "Category is required!"],
   },
-  amount: {
-   type: amountSchema,
+  amount: amountSchema,
+  expire_date: {
+   type: Date,
+   required: [true, "Expiration date is required!"],
   },
-  status: {
-   type: "String",
-   enum: ["Ready", "Busy", "Unavailable"],
-   default: "Ready",
-  },
+  phone: phoneSchema,
   requested: [
    {
     type: mongoose.Schema.Types.ObjectId,

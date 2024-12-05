@@ -17,7 +17,7 @@ export default function RecentRequests() {
   );
  }, []);
  return (
-  <div className="w-full max-w-7xl px-8 mx-auto flex overflow-hidden flex-col">
+  <div className="w-full max-w-7xl px-8 mx-auto">
    <div className="w-full mt-5 flex items-center justify-between">
     <div className="z-10 self-start text-4xl font-semibold leading-none max-md:text-4xl">
      Recent Requests
@@ -75,11 +75,12 @@ export default function RecentRequests() {
       </div>
      )}
     </div>
-    <div className="flex mb-8 flex-col items-start ">
-     <Link to="/view/requests" className="self-end mt-5 hover:text-sky-600">
-      <button>View More..</button>
-     </Link>
-    </div>
+   </div>
+   
+   <div className="flex mb-8 flex-col items-start ">
+    <Link to="/view/requests" className="self-end mt-5 hover:text-sky-600">
+     <button>View More..</button>
+    </Link>
    </div>
   </div>
  );

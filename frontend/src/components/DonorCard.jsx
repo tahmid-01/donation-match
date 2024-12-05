@@ -1,9 +1,20 @@
 import { Link } from "react-router-dom";
 
-export function DonorCard({ id, name, donationType, donations, imageSrc }) {
+export function DonorCard({
+ id,
+ name,
+ donationType,
+ donations,
+ imageSrc,
+ whiteBg,
+}) {
  return (
   <div className="flex flex-col w-full">
-   <div className="flex flex-col grow pb-4 w-full rounded-3xl bg-back">
+   <div
+    className={`flex flex-col grow pb-4 w-full rounded-3xl ${
+     whiteBg ? "bg-white" : "bg-back"
+    }`}
+   >
     <img
      loading="lazy"
      src={imageSrc}

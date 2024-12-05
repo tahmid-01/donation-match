@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
 
-export default function RequestCard({ id, name, need, date, mobile }) {
+export default function RequestCard({ id, name, need, date, mobile, whiteBg }) {
  return (
-  <div className="flex overflow-hidden flex-col grow mb-5 w-full rounded-3xl bg-back max-md:mt-10">
+  <div
+   className={`flex overflow-hidden flex-col grow mb-5 w-full rounded-3xl ${
+    whiteBg ? "bg-white" : "bg-back"
+   } max-md:mt-10`}
+  >
    <div className="flex flex-col px-5 mt-4 mb-3">
     <div className="text-xl font-semibold text-black">{name}</div>
     <div className="flex gap-2 justify-between items-start text-orange-500">

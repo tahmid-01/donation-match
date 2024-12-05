@@ -33,12 +33,22 @@ router.get("/latest", async (req, res, next) => {
 });
 
 /* GET - get all requests */
-router.get("/all", checkAuth, async (req, res, next) => {
+router.get("/all", async (req, res, next) => {
  try {
-  const data = await User.find();
+  const data = await Request.find().sort({ createdAt: -1 }).populate({
+   path: "user",
+   select: "profile.display_name profile.profile_photo",
+  });
   res.status(200).json({
    message: "Retrieved all donation requests!",
-   data,
+   data: data.map((d) => ({
+    ...d.toObject(),
+    date: d.createdAt,
+    user: {
+     name: d.user?.profile?.display_name || "Anonymous",
+     profile_photo: d.user?.profile?.profile_photo || "/images/avatar.png",
+    },
+   })),
   });
  } catch (err) {
   return next(err);
@@ -99,6 +109,9 @@ router.post("/create", checkAuth, async (req, res, next) => {
     newRequest.description = description;
    }
    const savedRequest = await newRequest.save();
+   const user = await User.findById(req.userId);
+   user.requests.push(savedRequest._id);
+   await user.save();
 
    res.status(201).json({
     message: "Donation request created!",

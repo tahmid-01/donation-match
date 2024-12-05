@@ -3,9 +3,11 @@ const mongoose = require("mongoose");
 
 const checkAuth = require("../middlewares/checkAuth");
 const donateSchema = require("../models/donate");
+const userSchema = require("../models/user");
 
 const router = express.Router();
 const Donate = mongoose.model("Donate", donateSchema);
+const User = mongoose.model("User", userSchema);
 
 /* GET - get latest 10 donations */
 router.get("/latest", async (req, res, next) => {
@@ -37,12 +39,22 @@ router.get("/latest", async (req, res, next) => {
 });
 
 /* GET - get all donations */
-router.get("/all", checkAuth, async (req, res, next) => {
+router.get("/all", async (req, res, next) => {
  try {
-  const data = await Donate.find();
+  const data = await Donate.find().sort({ createdAt: -1 }).populate({
+   path: "user",
+   select: "profile.display_name profile.profile_photo donate",
+  });
   res.status(200).json({
    message: "Retrieved all donations!",
-   data,
+   data: data.map((d) => ({
+    ...d.toObject(),
+    user: {
+     name: d.user?.profile?.display_name || "Anonymous",
+     profile_photo: d.user?.profile?.profile_photo || "/images/avatar.png",
+     donation_count: d.user?.donate?.length || 0,
+    },
+   })),
   });
  } catch (err) {
   return next(err);
@@ -99,6 +111,9 @@ router.post("/create", checkAuth, async (req, res, next) => {
     newDonate.description = description;
    }
    const savedDonate = await newDonate.save();
+   const user = await User.findById(req.userId);
+   user.donate.push(newDonate._id);
+   await user.save();
 
    res.status(201).json({
     message: "Donation created!",

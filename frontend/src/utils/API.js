@@ -163,3 +163,31 @@ export const getRequestsByCategory = async (category, success, error) => {
   error
  );
 };
+
+export const getAllDonations = async (success, error) => {
+ await fetchData(
+  "/api/v1/donate/all",
+  {
+   method: "GET",
+   headers: {
+    "Content-Type": "application/json",
+   },
+  },
+  success,
+  error
+ );
+};
+
+export const getAllRequests = async (success, error) => {
+ await fetchData(
+  "/api/v1/request/all",
+  {
+   method: "GET",
+   headers: {
+    "Content-Type": "application/json"
+   },
+  },
+  success,
+  error
+ );
+};

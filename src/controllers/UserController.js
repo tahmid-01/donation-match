@@ -27,7 +27,7 @@ router.get("/me", checkAuth, async (req, res, next) => {
 
 /* POST - create a new user */
 router.post("/signup", async (req, res, next) => {
- if (req.body.display_name && req.body.password && req.body.email) {
+ if (req.body.displayName && req.body.password && req.body.email) {
   const newUser = new User({
    password: bcrypt.hashSync(req.body.password, 10),
    email: req.body.email,

@@ -4,7 +4,7 @@ const path = require("path");
 const cors = require("cors");
 
 const connectDB = require("./src/utils/mongodb");
-const connectCloudinary = require("./src/utils/cloudinary")
+const connectCloudinary = require("./src/utils/cloudinary");
 const UserController = require("./src/controllers/UserController");
 const RequestController = require("./src/controllers/RequestController");
 const DonateController = require("./src/controllers/DonateController");
@@ -40,8 +40,12 @@ app.get("/api/v1", (req, res) => {
 app.use("/api/v1/user", UserController);
 app.use("/api/v1/donate", DonateController);
 app.use("/api/v1/request", RequestController);
-app.get("*", (req, res) => {
- res.sendFile(path.join(__dirname, "frontend/dist/index.html"));
+app.get("*", (req, res, next) => {
+ if (req.accepts("html")) {
+  res.sendFile(path.join(__dirname, "frontend/dist/index.html"));
+ } else {
+  next();
+ }
 });
 
 /*** default error handler */

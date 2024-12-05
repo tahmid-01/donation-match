@@ -17,7 +17,7 @@ export default function RecentRequests() {
   );
  }, []);
  return (
-  <div className="w-full max-w-7xl px-8 mx-auto flex felx-col pb-5">
+  <div className="w-full max-w-7xl px-8 mx-auto flex flex-col pb-5">
    <div className="w-full mt-5 flex items-center justify-between">
     <div className="z-10 self-start text-4xl font-semibold leading-none max-md:text-4xl">
      Recent Requests

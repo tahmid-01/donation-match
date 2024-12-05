@@ -20,6 +20,11 @@ const NavigationLink = ({ text, to, isActive }) => {
 function Navbar({ loggedIn }) {
  const location = useLocation();
  const [scrolled, setScrolled] = useState(false);
+ const [name, setName] = useState(null);
+ const [email, setEmail] = useState(null);
+ const [profilePic, setProfilePic] = useState(null);
+ const profile = JSON.parse(localStorage.getItem("profile"));
+
  const navItems = [
   { text: "Home", to: "/", isActive: location.pathname === "/" },
   {
@@ -38,6 +43,15 @@ function Navbar({ loggedIn }) {
    isActive: location.pathname === "/view/requests",
   },
  ];
+
+ useEffect(() => {
+  if (profile) {
+   setName(profile?.display_name);
+   setEmail(profile?.email);
+   setProfilePic(profile?.profile_photo);
+  }
+ }, [profile]);
+
  useEffect(() => {
   window.addEventListener("scroll", () => {
    if (window.scrollY > 10) {
@@ -85,9 +99,20 @@ function Navbar({ loggedIn }) {
     {loggedIn ? (
      <div className="flex items-center gap-1">
       <Link to="/profile">
-       <button className="py-1 px-4 border border-gray-500/30 hover:border-orange-600 transition-colors duration-200 rounded-[50px] focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 text-left">
-        <p className="text-xs leading-[0.8rem]">Abdullah</p>
-        <p className="text-xs text-gray-500">abdullah@gmail.com</p>
+       <button className="py-1 pl-1 pr-2 border border-gray-500/30 hover:border-orange-600 transition-colors duration-200 rounded-[50px] focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 text-left">
+        <div className="flex items-center gap-1">
+         <img
+          src={profilePic || "/images/avatar.png"}
+          alt="Profile"
+          className="w-8 h-8 rounded-full"
+         />
+         <div>
+          <p className="text-xs leading-[0.8rem]">{name || "Unknown"}</p>
+          <p className="text-xs text-gray-500">
+           {email || "an error occured!"}
+          </p>
+         </div>
+        </div>
        </button>
       </Link>
       <button

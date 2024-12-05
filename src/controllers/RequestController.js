@@ -20,9 +20,10 @@ router.get("/latest", async (req, res, next) => {
    message: "Retrieved latest donation requests!",
    data: data.map((d) => ({
     ...d.toObject(),
+    date: d.createdAt,
     user: {
      name: d.user?.profile?.display_name || "Anonymous",
-     profile_photo: d.user?.profile?.profile_photo || "default.png",
+     profile_photo: d.user?.profile?.profile_photo || "/images/avatar.png",
     },
    })),
   });

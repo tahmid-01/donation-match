@@ -18,8 +18,14 @@ export default function Layout({ children }) {
   });
   if (localStorage.getItem("t$n")) {
    onAuth(
-    () => {
+    (d) => {
      setLoggedin(true);
+     window.localStorage.setItem(
+      "profile",
+      JSON.stringify({
+       ...d.data.profile,
+      })
+     );
     },
     () => {
      setLoggedin(false);

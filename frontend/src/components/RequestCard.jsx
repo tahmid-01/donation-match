@@ -13,7 +13,10 @@ export default function RequestCard({ id, name, need, date, address, mobile }) {
       </div>
       <div>
        <span className="text-xl text-black">Date:</span>
-       <span className="font-light text-black"> {date} </span>
+       <span className="font-light text-black">
+        {" "}
+        {new Date(date).toDateString()}
+       </span>
       </div>
      </div>
     </div>

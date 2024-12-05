@@ -26,7 +26,7 @@ const userSchema = mongoose.Schema({
   phone: phoneSchema,
   profile_photo: {
    type: String,
-   default: "default.png",
+   default: "/images/avatar.png",
   },
  },
  create_time: {

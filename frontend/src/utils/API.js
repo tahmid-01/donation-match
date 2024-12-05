@@ -75,3 +75,31 @@ export const logout = async (success, error) => {
   error
  );
 };
+
+export const topDonors = async (success, error) => {
+ await fetchData(
+  "/api/v1/donate/latest",
+  {
+   method: "GET",
+   headers: {
+    "Content-Type": "application/json",
+   },
+  },
+  success,
+  error
+ );
+};
+
+export const recentRequests = async (success, error) => {
+ await fetchData(
+  "/api/v1/request/latest",
+  {
+   method: "GET",
+   headers: {
+    "Content-Type": "application/json",
+   },
+  },
+  success,
+  error
+ );
+};

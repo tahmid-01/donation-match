@@ -4,6 +4,7 @@ const path = require("path");
 const cors = require("cors");
 
 const connectDB = require("./utils/mongodb");
+const connectCloudinary = require("./utils/cloudinary")
 const UserController = require("./controllers/UserController");
 const RequestController = require("./controllers/RequestController");
 const DonateController = require("./controllers/DonateController");
@@ -25,8 +26,9 @@ app.use(
  })
 );
 
-/*** database connection */
+/*** all connections */
 connectDB();
+connectCloudinary();
 
 /*** application routes */
 app.get("/api/v1", (req, res) => {

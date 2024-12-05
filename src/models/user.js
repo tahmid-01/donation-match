@@ -24,6 +24,10 @@ const userSchema = mongoose.Schema({
   },
   address: addressSchema,
   phone: phoneSchema,
+  profile_photo: {
+   type: String,
+   default: "default.png",
+  },
  },
  create_time: {
   type: Date,

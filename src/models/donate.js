@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const amountSchema = require("./common/amount");
-const patientSchema = require("./common/patient");
 
 const donateSchema = mongoose.Schema(
  {
@@ -28,12 +27,18 @@ const donateSchema = mongoose.Schema(
   },
   amount: {
    type: amountSchema,
-   required: [true, "Amount {unit & value} is required!"],
   },
-  patient: {
-   type: patientSchema,
-   required: [true, "Patient {name & relationship} is required!"],
+  status: {
+   type: "String",
+   enum: ["Ready", "Busy", "Unavailable"],
+   default: "Ready",
   },
+  requested: [
+   {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+   },
+  ],
  },
  {
   timestamps: true,

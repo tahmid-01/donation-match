@@ -12,10 +12,19 @@ const User = mongoose.model("User", userSchema);
 /* GET - get latest 10 requests (unauthorized) */
 router.get("/latest", async (req, res, next) => {
  try {
-  const data = await Request.find.find().sort({ createdAt: -1 }).limit(10);
+  const data = await Request.find().sort({ createdAt: -1 }).limit(10).populate({
+   path: "user",
+   select: "profile.display_name profile.profile_photo",
+  });
   res.status(200).json({
    message: "Retrieved latest donation requests!",
-   data,
+   data: data.map((d) => ({
+    ...d.toObject(),
+    user: {
+     name: d.user?.profile?.display_name || "Anonymous",
+     profile_photo: d.user?.profile?.profile_photo || "default.png",
+    },
+   })),
   });
  } catch (err) {
   return next(err);

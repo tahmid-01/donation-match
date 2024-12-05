@@ -1,8 +1,21 @@
+import { useEffect, useState } from "react";
 import RequestCard from "./RequestCard";
-import requestsData from "../data/requestsData.json";
 import { Link } from "react-router-dom";
+import { recentRequests } from "../utils/API";
 
 export default function RecentRequests() {
+ const [requests, setRequests] = useState(null);
+ useEffect(() => {
+  recentRequests(
+   (data) => {
+    setRequests(data.data);
+   },
+   (err) => {
+    setRequests(false);
+    console.log(err);
+   }
+  );
+ }, []);
  return (
   <div className="w-full max-w-7xl px-8 mx-auto flex overflow-hidden flex-col">
    <div className="w-full mt-5 flex items-center justify-between">
@@ -27,13 +40,40 @@ export default function RecentRequests() {
      </svg>
     </button>
    </div>
-   <div className="mt-11 w-full max-md:mt-10 max-md:max-w-full">
-    <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-     {requestsData.map((request, index) => (
-      <div key={index} className="w-full">
-       <RequestCard {...request} />
+   <div className="mt-11">
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+     {Array.isArray(requests) ? (
+      requests.length > 0 ? (
+       requests.map((request, index) => (
+        <div key={index} className="w-full">
+         <RequestCard
+          id={request._id}
+          name={request.user.name}
+          need={request.category}
+          address={request.address}
+          date={request.date}
+          mobile={request.phone}
+         />
+        </div>
+       ))
+      ) : (
+       <div className="col-span-full text-center p-4 bg-gray-100 rounded-lg shadow-md">
+        <p className="text-gray-500 text-lg font-semibold">
+         No requests available
+        </p>
+       </div>
+      )
+     ) : requests === false ? (
+      <div className="col-span-full text-center p-4 bg-red-100 rounded-lg shadow-md">
+       <p className="text-red-500 text-lg font-semibold">
+        Failed to load requests
+       </p>
       </div>
-     ))}
+     ) : (
+      <div className="col-span-full text-center p-4 bg-blue-100 rounded-lg shadow-md">
+       <p className="text-blue-500 text-lg font-semibold">Loading...</p>
+      </div>
+     )}
     </div>
     <div className="flex mb-8 flex-col items-start ">
      <Link to="/view/requests" className="self-end mt-5 hover:text-sky-600">

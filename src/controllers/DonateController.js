@@ -10,10 +10,27 @@ const Donate = mongoose.model("Donate", donateSchema);
 /* GET - get latest 10 donations (unauthorized) */
 router.get("/latest", async (req, res, next) => {
  try {
-  const data = await Donate.find().sort({ createdAt: -1 }).limit(10);
+  const data = await Donate.find({
+   status: "Ready",
+  })
+   .sort({ createdAt: -1 })
+   .limit(10)
+   .populate({
+    path: "user",
+    select: "profile.display_name profile.profile_photo donate",
+   });
+
   res.status(200).json({
    message: "Retrieved latest donations!",
-   data,
+   data: data.map((d) => ({
+    ...d.toObject(),
+    date: d.createdAt,
+    user: {
+     name: d.user?.profile?.display_name || "Anonymous",
+     profile_photo: d.user?.profile?.profile_photo || "default.png",
+     donation_count: d.user?.donate?.length || 0,
+    },
+   })),
   });
  } catch (err) {
   return next(err);
@@ -41,7 +58,7 @@ router.post("/create", checkAuth, async (req, res, next) => {
    user: req.userId,
    category,
    amount,
-   patient
+   patient,
   });
   const savedDonate = await newDonate.save();
 

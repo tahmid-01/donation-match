@@ -1,9 +1,34 @@
 const mongoose = require("mongoose");
 
 const amountSchema = require("./common/amount");
-const patientSchema = require("./common/patient");
 const addressSchema = require("./common/address");
 const phoneSchema = require("./common/phone");
+const { nameValidation } = require("../utils/validate");
+
+const patientSchema = mongoose.Schema({
+ name: {
+  type: String,
+  validate: nameValidation,
+ },
+ relationship: {
+  type: String,
+  enum: [
+   "Self (Man)",
+   "Self (Woman)",
+   "Spouse",
+   "Father",
+   "Mother",
+   "Son",
+   "Daughter",
+   "Brother",
+   "Sister",
+   "Relative (Man)",
+   "Relative (Woman)",
+   "Unknown",
+  ],
+  required: [true, "Relationship is required!"],
+ },
+});
 
 const requestSchema = mongoose.Schema(
  {
@@ -28,18 +53,20 @@ const requestSchema = mongoose.Schema(
    ],
    required: [true, "Category is required!"],
   },
-  amount: {
-   type: amountSchema,
-   required: [true, "Amount {unit & value} is required!"],
-  },
+  amount: amountSchema,
   patient: {
    type: patientSchema,
-   required: [true, "Patient {name & relationship} is required!"],
+   required: [true, "Patient information is required!"],
   },
   address: addressSchema,
   phone: {
    type: phoneSchema,
-   required: [true, "Patient phone {code & number} is required!"],
+   required: [true, "Phone number is required!"],
+  },
+  status: {
+   type: "String",
+   enum: ["Pending", "Completed"],
+   default: "Pending",
   },
  },
  {

@@ -78,7 +78,7 @@ Welcome to Donation Match, a web application designed to connect individuals in 
 - Introduce a points-based reward system for donors.
 
 ## Contributors
-- **Contributor 1 :[Tahmid Hossain](www.linkedin.com/in/tahmid~hossain/)** - Frontend Development
+- **Contributor 1 :[Tahmid Hossain](http://www.linkedin.com/in/tahmid~hossain/)** - Frontend Development
 - **Contributor 2 :[Mohammad Sefatullah](https://www.linkedin.com/in/mosefatullah/)** - Backend Development
 - **Contributor 3 :[Khaled Hasan Rafi](https://www.linkedin.com/in/khaled-hasan-422b472a3/)** - Design and UX
 
